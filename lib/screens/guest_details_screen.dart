@@ -1,6 +1,7 @@
 import 'package:final_task/business_logic/guest_cubit.dart';
 import 'package:final_task/models/guest_details_model.dart';
 import 'package:final_task/repository/guset_repository.dart';
+import 'package:final_task/screens/create_user_screen.dart';
 import 'package:final_task/web_services/guest_web_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -25,82 +26,87 @@ class GuestDetailsScreen extends StatelessWidget {
   //   );
   // }
 
-  Dialog actionMenu = Dialog(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-    child: Container(
-      padding: EdgeInsets.all(16),
-      height: 300,
-      width: 600,
-      color: Colors.black,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'Choose Action',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey, fontSize: 12),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.black),
+  Widget createActionMenu(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: Container(
+        padding: EdgeInsets.all(16),
+        height: 300,
+        width: 600,
+        color: Colors.black,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Choose Action',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
-            child: const Text(
-              'Edit Guest',
-              style: TextStyle(color: Colors.blue, fontSize: 18),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CreateNewGuest()));
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+              ),
+              child: const Text(
+                'Edit Guest',
+                style: TextStyle(color: Colors.blue, fontSize: 18),
+              ),
             ),
-          ),
-          const Divider(
-            height: 2,
-            color: Colors.grey,
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.black),
+            const Divider(
+              height: 2,
+              color: Colors.grey,
             ),
-            child: const Text(
-              'Add Trip',
-              style: TextStyle(color: Colors.blue, fontSize: 18),
+            ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+              ),
+              child: const Text(
+                'Add Trip',
+                style: TextStyle(color: Colors.blue, fontSize: 18),
+              ),
             ),
-          ),
-          const Divider(
-            height: 2,
-            color: Colors.grey,
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.black),
+            const Divider(
+              height: 2,
+              color: Colors.grey,
             ),
-            child: const Text(
-              'Delete Guest',
-              style: TextStyle(color: Colors.red, fontSize: 18),
+            ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+              ),
+              child: const Text(
+                'Delete Guest',
+                style: TextStyle(color: Colors.red, fontSize: 18),
+              ),
             ),
-          ),
-          Container(
-            height: 15,
-            color: Colors.transparent,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Navigator.pop();
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.black),
+            Container(
+              height: 15,
+              color: Colors.transparent,
             ),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+              ),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-        ],
-      ),
-    ), //this right here
-  );
+          ],
+        ),
+      ), //this right here
+    );
+  }
 
   Widget _buildScreen(
       GuestDetailsModel guest, List<Trips> trips, BuildContext context) {
@@ -122,7 +128,9 @@ class GuestDetailsScreen extends StatelessWidget {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (context) => actionMenu,
+                      builder: (context) {
+                        return createActionMenu(context);
+                      },
                     );
 
                     //   showMenu(

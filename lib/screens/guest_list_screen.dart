@@ -10,7 +10,7 @@ class GuestListScreen extends StatelessWidget {
 
   List<GuestDetailsModel> allGuests = [];
 
-  PreferredSizeWidget? _buildAppBar() {
+  PreferredSizeWidget? buildAppBar(BuildContext context) {
     return AppBar(
       title: const Text(
         'US Embassy',
@@ -23,7 +23,9 @@ class GuestListScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       elevation: 0,
       leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: const Icon(Icons.arrow_back_ios_new_outlined)),
     );
   }
@@ -64,7 +66,7 @@ class GuestListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: buildAppBar(context),
       body: BlocBuilder<GuestCubit, GuestState>(
         builder: (context, state) {
           BlocProvider.of<GuestCubit>(context).getGuests();

@@ -1,5 +1,6 @@
 import 'package:final_task/business_logic/guest_cubit.dart';
 import 'package:final_task/repository/guset_repository.dart';
+import 'package:final_task/screens/create_user_screen.dart';
 import 'package:final_task/screens/guest_details_screen.dart';
 import 'package:final_task/screens/guest_list_screen.dart';
 import 'package:final_task/web_services/guest_web_service.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       create: (context) => GuestCubit(GuestRepository(GuestWebService())),
       child: MaterialApp(
         title: 'Flutter Demo',
-        home: GuestListScreen(),
+        home: CreateNewGuest(),
       ),
     );
   }

@@ -103,6 +103,78 @@
 //   }
 // }
 //---------------------------------------------------------------
+class Guest {
+  String username;
+  String password;
+  String password_alt;
+  String entity_id;
+  String loacalId;
+  String email;
+  String first_name;
+  String last_name;
+  String img;
+  String contact_number;
+  String title;
+  String organization;
+  String group_ids;
+  String contact_point_id;
+
+  Guest({
+    required this.username,
+    required this.password_alt,
+    required this.email,
+    required this.first_name,
+    required this.last_name,
+    required this.img,
+    required this.contact_number,
+    required this.title,
+    required this.organization,
+    required this.entity_id,
+    required this.password,
+    required this.loacalId,
+    required this.contact_point_id,
+    required this.group_ids,
+  });
+
+  factory Guest.fromJson(Map<String, dynamic> jsonData) {
+    return Guest(
+      username: jsonData['username'],
+      password_alt: jsonData['password_alt'],
+      email: jsonData['email'],
+      first_name: jsonData['first_name'],
+      last_name: jsonData['last_name'],
+      img: jsonData['img'],
+      contact_number: jsonData['contact_number'],
+      title: jsonData['title'],
+      organization: jsonData['organization'],
+      entity_id: jsonData['entity_id'],
+      password: jsonData['password'],
+      loacalId: jsonData['loacalId'],
+      contact_point_id: jsonData['contact_point_id'],
+      group_ids: jsonData['group_ids'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['username'] = username;
+    data['password_alt'] = password_alt;
+    data['email'] = email;
+    data['first_name'] = first_name;
+    data['last_name'] = last_name;
+    data['img'] = img;
+    data['contact_number'] = contact_number;
+    data['title'] = title;
+    data['organization'] = organization;
+    data['entity_id'] = entity_id;
+    data['password'] = password;
+    data['loacalId'] = loacalId;
+    data['contact_point_id'] = contact_point_id;
+    data['group_ids'] = group_ids;
+
+    return data;
+  }
+}
 
 class GuestDetailsModel {
   String? username;

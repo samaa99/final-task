@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:final_task/constants.dart';
+import 'package:final_task/models/guest_details_model.dart';
 import 'package:http/http.dart' as http;
 
 class GuestWebService {
@@ -30,14 +31,25 @@ class GuestWebService {
     }
   }
 
-  Future<List<dynamic>> createGuest() async {
+  Future<dynamic> createGuest(Map<String, dynamic> body) async {
     Map<String, String> headers = {};
     headers.addAll({HttpHeaders.authorizationHeader: 'Bearer $kToken'});
-    http.Response response =
-        await http.post(Uri.parse('$kBaseUrl create-guest'), headers: headers);
+    http.Response response = await http.post(
+        Uri.parse(
+            'https://development-blink-api.herokuapp.com/api/v1/create-guest'),
+        headers: headers,
+        body: body);
     try {
-      final data = jsonDecode(response.body);
-      return data;
+      if (response.body.isNotEmpty) {
+        final data = jsonDecode(response.body);
+        final guest = GuestDetailsModel.fromJson(data);
+        print(response.statusCode);
+        print(guest);
+        return guest;
+      } else {
+        print(response.statusCode);
+        return [];
+      }
     } catch (e) {
       print(response.statusCode);
       print(response.body);

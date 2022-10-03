@@ -12,4 +12,9 @@ class GuestRepository {
     // print(guests.map((guest) => GuestDetailsModel.fromJson(guest)).toList());
     return guests.map((guest) => GuestDetailsModel.fromJson(guest)).toList();
   }
+
+  // Future<GuestDetailsModel> createGuest(Map<String,dynamic> guestBody) async {
+  //   final guest = await guestWebService.createGuest(guestBody);
+  //   return guest;
+  // }
 }
