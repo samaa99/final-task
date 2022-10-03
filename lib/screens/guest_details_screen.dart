@@ -28,12 +28,18 @@ class GuestDetailsScreen extends StatelessWidget {
   Dialog actionMenu = Dialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
     child: Container(
+      padding: EdgeInsets.all(16),
       height: 300,
       width: 600,
       color: Colors.black,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const Text(
+            'Choose Action',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey, fontSize: 12),
+          ),
           ElevatedButton(
             onPressed: () {},
             style: ButtonStyle(

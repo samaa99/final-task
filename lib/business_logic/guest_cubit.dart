@@ -19,12 +19,4 @@ class GuestCubit extends Cubit<GuestState> {
     });
     return guests;
   }
-
-  // List<Trips> getTrips() {
-  //   guestRepository.getTrips().then((trips) {
-  //     emit(TripsLoaded(trips));
-  //     this.trips = trips;
-  //   });
-  //   return trips;
-  // }
 }

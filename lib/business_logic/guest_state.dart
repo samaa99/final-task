@@ -10,7 +10,4 @@ class GuestsLoaded extends GuestState {
   GuestsLoaded(this.guests);
 }
 
-// class TripsLoaded extends GuestState {
-//   final List<Trips> trips;
-//   TripsLoaded(this.trips);
-// }
+
