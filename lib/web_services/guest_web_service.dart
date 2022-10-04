@@ -57,15 +57,25 @@ class GuestWebService {
     }
   }
 
-  Future<List<dynamic>> editGuest() async {
+  Future<dynamic> editGuest(Map<String, dynamic> body, String id) async {
     Map<String, String> headers = {};
     headers.addAll({HttpHeaders.authorizationHeader: 'Bearer $kToken'});
-    http.Response response = await http
-        .patch(Uri.parse('$kBaseUrl update-guest/xwVtXn'), headers: headers);
+    http.Response response = await http.patch(
+        Uri.parse(
+            'https://development-blink-api.herokuapp.com/api/v1/update-guest/$id'),
+        headers: headers,
+        body: body);
     try {
-      final data = jsonDecode(response.body);
-
-      return data;
+      if (response.body.isNotEmpty) {
+        final data = jsonDecode(response.body);
+        final guest = GuestDetailsModel.fromJson(data);
+        print(response.statusCode);
+        print(guest);
+        return guest;
+      } else {
+        print(response.statusCode);
+        return [];
+      }
     } catch (e) {
       // print(response.statusCode);
       // print(response.body);
@@ -73,15 +83,24 @@ class GuestWebService {
     }
   }
 
-  Future<List<dynamic>> deleteGuest() async {
+  Future deleteGuest(String id) async {
     Map<String, String> headers = {};
     headers.addAll({HttpHeaders.authorizationHeader: 'Bearer $kToken'});
-    http.Response response = await http
-        .patch(Uri.parse('$kBaseUrl delete-guest/xwVtXn'), headers: headers);
+    http.Response response = await http.delete(
+        Uri.parse(
+            'https://development-blink-api.herokuapp.com/api/v1/delete-guest/$id'),
+        headers: headers);
     try {
-      final data = jsonDecode(response.body);
-
-      return data;
+      if (response.body.isNotEmpty) {
+        final data = jsonDecode(response.body);
+        final guest = GuestDetailsModel.fromJson(data);
+        print(response.statusCode);
+        print(guest);
+        return guest;
+      } else {
+        print(response.statusCode);
+        return [];
+      }
     } catch (e) {
       // print(response.statusCode);
       // print(response.body);

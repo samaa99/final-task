@@ -3,6 +3,7 @@ import 'package:final_task/models/guest_details_model.dart';
 import 'package:final_task/repository/guset_repository.dart';
 import 'package:final_task/screens/create_user_screen.dart';
 import 'package:final_task/web_services/guest_web_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,8 @@ class GuestDetailsScreen extends StatelessWidget {
   //List<TripsModel> trips = [];
   List<Trips> trips = [];
   List<Matches> matches = [];
-
+  List<Reservations> reservations = [];
+  List<Rooms> rooms = [];
   // Widget _buildLoading() {
   //   return Center(
   //     child: CircularProgressIndicator(
@@ -27,84 +29,147 @@ class GuestDetailsScreen extends StatelessWidget {
   // }
 
   Widget createActionMenu(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child: Container(
-        padding: EdgeInsets.all(16),
-        height: 300,
-        width: 600,
-        color: Colors.black,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Choose Action',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 12),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CreateNewGuest()));
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+    return CupertinoActionSheet(
+      title: const Text(
+        'Choose Action',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.grey, fontSize: 12),
+      ),
+      actions: [
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CreateNewGuest(guestId: guest.hashId),
               ),
-              child: const Text(
-                'Edit Guest',
-                style: TextStyle(color: Colors.blue, fontSize: 18),
-              ),
-            ),
-            const Divider(
-              height: 2,
-              color: Colors.grey,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
-              ),
-              child: const Text(
-                'Add Trip',
-                style: TextStyle(color: Colors.blue, fontSize: 18),
-              ),
-            ),
-            const Divider(
-              height: 2,
-              color: Colors.grey,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
-              ),
-              child: const Text(
-                'Delete Guest',
-                style: TextStyle(color: Colors.red, fontSize: 18),
-              ),
-            ),
-            Container(
-              height: 15,
-              color: Colors.transparent,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
-              ),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+            );
+            // print(guest.hashId);
+          },
+          child: const Text(
+            'Edit Guest',
+            style: TextStyle(color: Colors.blue, fontSize: 18),
+          ),
         ),
-      ), //this right here
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CreateNewGuest(guestId: guest.hashId),
+              ),
+            );
+            // print(guest.hashId);
+          },
+          child: const Text(
+            'Add trip',
+            style: TextStyle(color: Colors.blue, fontSize: 18),
+          ),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            GuestWebService().deleteGuest(guest.hashId ?? '');
+          },
+          child: const Text(
+            'Delete Guest',
+            style: TextStyle(color: Colors.red, fontSize: 18),
+          ),
+        ),
+      ],
+      cancelButton: TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: const Text(
+          'Cancel',
+          style: TextStyle(
+              color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      // child: Container(
+      //   padding: EdgeInsets.all(16),
+      //   height: 300,
+      //   width: 600,
+      //   color: Colors.black,
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.stretch,
+      //     children: [
+      //       const Text(
+      //         'Choose Action',
+      //         textAlign: TextAlign.center,
+      //         style: TextStyle(color: Colors.grey, fontSize: 12),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                   builder: (context) => CreateNewGuest(
+      //                         guestId: guest.hashId,
+      //                       )));
+      //           // print(guest.hashId);
+      //         },
+      //         style: ButtonStyle(
+      //           backgroundColor: MaterialStateProperty.all(Colors.black),
+      //         ),
+      //         child: const Text(
+      //           'Edit Guest',
+      //           style: TextStyle(color: Colors.blue, fontSize: 18),
+      //         ),
+      //       ),
+      //       const Divider(
+      //         height: 2,
+      //         color: Colors.grey,
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () {},
+      //         style: ButtonStyle(
+      //           backgroundColor: MaterialStateProperty.all(Colors.black),
+      //         ),
+      //         child: const Text(
+      //           'Add Trip',
+      //           style: TextStyle(color: Colors.blue, fontSize: 18),
+      //         ),
+      //       ),
+      //       const Divider(
+      //         height: 2,
+      //         color: Colors.grey,
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           GuestWebService().deleteGuest(guest.hashId ?? '');
+      //         },
+      //         style: ButtonStyle(
+      //           backgroundColor: MaterialStateProperty.all(Colors.black),
+      //         ),
+      //         child: const Text(
+      //           'Delete Guest',
+      //           style: TextStyle(color: Colors.red, fontSize: 18),
+      //         ),
+      //       ),
+      //       Container(
+      //         height: 15,
+      //         color: Colors.transparent,
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           Navigator.pop(context);
+      //         },
+      //         style: ButtonStyle(
+      //           backgroundColor: MaterialStateProperty.all(Colors.black),
+      //         ),
+      //         child: const Text(
+      //           'Cancel',
+      //           style: TextStyle(
+      //               color: Colors.blue,
+      //               fontSize: 18,
+      //               fontWeight: FontWeight.bold),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ), //this right here
     );
   }
 
@@ -126,12 +191,19 @@ class GuestDetailsScreen extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    showDialog(
+                    showCupertinoModalPopup(
                       context: context,
                       builder: (context) {
                         return createActionMenu(context);
                       },
+                      // barrierColor: Colors.black,
                     );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (context) {
+                    //     return createActionMenu(context);
+                    //   },
+                    // );
 
                     //   showMenu(
                     //     color: Colors.black,
@@ -220,427 +292,472 @@ class GuestDetailsScreen extends StatelessWidget {
             CustomProfileDataContainer(
               guest: guest,
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  color: Colors.grey[900],
-                  child: ExpansionPanelList.radio(
-                    children: trips
-                        .map(
-                          (trip) => ExpansionPanelRadio(
-                            canTapOnHeader: true,
-                            backgroundColor: Colors.black38,
-                            value: Text(
-                              '${trip.id}',
-                            ),
-                            headerBuilder: (context, isOpen) {
-                              return Padding(
+            SingleChildScrollView(
+              child: Container(
+                color: Colors.grey[900],
+                child: ExpansionPanelList.radio(
+                  children: trips
+                      .map(
+                        (trip) => ExpansionPanelRadio(
+                          canTapOnHeader: true,
+                          backgroundColor: Colors.black38,
+                          value: Text(
+                            '${trip.id}',
+                          ),
+                          headerBuilder: (context, isOpen) {
+                            return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8),
-                                child: ListTile(
-                                  title: Row(
-                                    children: [
-                                      const Text(
-                                        'Trip',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.white,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        const Text(
+                                          'Trip',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          ' ${trip.status}',
+                                          style: trip.status == 'approved'
+                                              ? const TextStyle(
+                                                  color: Colors.green,
+                                                )
+                                              : const TextStyle(
+                                                  color: Colors.redAccent,
+                                                ),
+                                          // '${guest.title}',
+                                        ),
+                                      ],
+                                    ),
+                                    const Icon(
+                                      Icons.mode_edit_outline_outlined,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                )
+                                // ListTile(
+                                //   title: Row(
+                                //     children: [
+                                //       const Text(
+                                //         'Trip',
+                                //         style: TextStyle(
+                                //             color: Colors.white,
+                                //             fontWeight: FontWeight.bold),
+                                //       ),
+                                //       Text(
+                                //         ' .${trip.status}',
+                                //         style: trip.status == 'approved'
+                                //             ? const TextStyle(
+                                //                 color: Colors.green,
+                                //               )
+                                //             : const TextStyle(
+                                //                 color: Colors.redAccent,
+                                //               ),
+                                //         // '${guest.title}',
+                                //       ),
+                                //     ],
+                                //   ),
+                                //   trailing: const Icon(
+                                //     Icons.mode_edit_outline_outlined,
+                                //     color: Colors.white,
+                                //   ),
+                                //   leading: const Icon(
+                                //     Icons.keyboard_arrow_down,
+                                //     color: Colors.white,
+                                //   ),
+                                // ),
+                                );
+                          },
+                          body: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const DefaultTextStyle(
+                                      style: kTitleTextStyle,
+                                      child: Text(
+                                        'Package',
                                       ),
-                                      Text(
-                                        ' .${trip.status}',
-                                        style: trip.status == 'approved'
-                                            ? const TextStyle(
-                                                color: Colors.green,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        trip.package?.image != null
+                                            ? Image.network(
+                                                trip.package!.image!,
+                                                height: 50,
+                                                width: 50,
                                               )
-                                            : const TextStyle(
-                                                color: Colors.redAccent,
-                                              ),
-                                        // '${guest.title}',
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: const Icon(
-                                    Icons.mode_edit_outline_outlined,
-                                    color: Colors.white,
-                                  ),
-                                  leading: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              );
-                            },
-                            body: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const DefaultTextStyle(
-                                        style: kTitleTextStyle,
-                                        child: Text(
-                                          'Package',
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/profile_img.png',
-                                            height: 50,
-                                            width: 50,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              DefaultTextStyle(
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                ),
-                                                child: Text(
-                                                  trip.package?.title ??
-                                                      'Platinuim Package',
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              Row(
-                                                children: const [
-                                                  DefaultTextStyle(
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                    ),
-                                                    child: Text(
-                                                      // '${trip.package?.features ?? 'Flight'} ',
-                                                      'Flight',
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  DefaultTextStyle(
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                      fontSize: 16,
-                                                    ),
-                                                    child: Text(
-                                                      'TBD',
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Divider(
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const DefaultTextStyle(
-                                        style: kTitleTextStyle,
-                                        child: Text(
-                                          'Companions',
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            leading: CircleAvatar(
-                                              child: Image.asset(
+                                            : Image.asset(
                                                 'assets/images/profile_img.png',
                                                 height: 50,
                                                 width: 50,
                                               ),
-                                            ),
-                                            title: const Text(
-                                              'Ahmad',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 18,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            subtitle: const Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 16.0),
-                                              child: Text(
-                                                'US Senitor  |  USA - P ',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w300,
-                                                  fontSize: 15,
-                                                  color: Color(0xff9A9A9A),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        itemCount: 2,
-                                      ),
-                                    ],
-                                  ),
-                                  const Divider(
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const DefaultTextStyle(
-                                        style: kTitleTextStyle,
-                                        child: Text(
-                                          'Matches',
+                                        const SizedBox(
+                                          width: 10,
                                         ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            DefaultTextStyle(
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                              ),
+                                              child: Text(
+                                                trip.package?.title ??
+                                                    'Platinuim Package',
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Row(
+                                              children: const [
+                                                DefaultTextStyle(
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                  child: Text(
+                                                    // '${trip.package?.features ?? 'Flight'} ',
+                                                    'Flight',
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                DefaultTextStyle(
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 16,
+                                                  ),
+                                                  child: Text(
+                                                    'TBD',
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Divider(
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const DefaultTextStyle(
+                                      style: kTitleTextStyle,
+                                      child: Text(
+                                        'Companions',
                                       ),
-                                      const SizedBox(
-                                        height: 10,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          leading: CircleAvatar(
+                                            child: Image.asset(
+                                              'assets/images/profile_img.png',
+                                              height: 50,
+                                              width: 50,
+                                            ),
+                                          ),
+                                          title: const Text(
+                                            'Ahmad',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          subtitle: const Padding(
+                                            padding: EdgeInsets.only(top: 16.0),
+                                            child: Text(
+                                              'US Senitor  |  USA - P ',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 15,
+                                                color: Color(0xff9A9A9A),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      itemCount: 2,
+                                    ),
+                                  ],
+                                ),
+                                const Divider(
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const DefaultTextStyle(
+                                      style: kTitleTextStyle,
+                                      child: Text(
+                                        'Matches',
                                       ),
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          matches = trip.matches ?? [];
-                                          return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Image.asset(
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        matches = trip.matches ?? [];
+                                        reservations = trip.reservations ?? [];
+                                        return Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/images/profile_img.png',
+                                                  height: 20,
+                                                  width: 20,
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  '${matches[index].firstTeam}',
+                                                  // 'QAT',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 15,
+                                                ),
+                                                const Text(
+                                                  'Vs.',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 18,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Image.asset(
+                                                  'assets/images/profile_img.png',
+                                                  height: 20,
+                                                  width: 20,
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  '${matches[index].secondTeam}',
+                                                  // 'ECU',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  '${matches[index].from}',
+                                                  // 'ECU',
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${matches[index].date}',
+                                                  // 'ECU',
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                      },
+                                      itemCount: trip.matches?.length ?? 0,
+                                    ),
+                                  ],
+                                ),
+                                const Divider(
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const DefaultTextStyle(
+                                      style: kTitleTextStyle,
+                                      child: Text(
+                                        'Stay',
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        rooms = reservations[index].rooms ?? [];
+                                        return Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            rooms[index].roomImages?[0] != null
+                                                ? Image.network(
+                                                    rooms[index].roomImages![0],
+                                                    height: 100,
+                                                    width: 100,
+                                                  )
+                                                : Image.asset(
                                                     'assets/images/profile_img.png',
-                                                    height: 20,
-                                                    width: 20,
+                                                    height: 100,
+                                                    width: 100,
                                                   ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
                                                   Text(
-                                                    '${matches[index].firstTeam}',
-                                                    // 'QAT',
+                                                    rooms[index].stay?.name !=
+                                                            null
+                                                        ? '${rooms[index].stay?.name}'
+                                                        : 'Presidinial wing',
                                                     style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.w700,
-                                                      fontSize: 18,
-                                                      color: Colors.grey,
+                                                      fontSize: 15,
+                                                      color: Colors.white,
                                                     ),
                                                   ),
                                                   const SizedBox(
-                                                    width: 15,
+                                                    height: 5,
                                                   ),
                                                   const Text(
-                                                    'Vs.',
+                                                    // '${rooms[index].stay?.description ?? ''}',
+                                                    'Marriot hotel',
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      fontSize: 18,
+                                                      fontSize: 15,
                                                       color: Colors.grey,
                                                     ),
                                                   ),
                                                   const SizedBox(
-                                                    width: 15,
+                                                    height: 5,
                                                   ),
-                                                  Image.asset(
-                                                    'assets/images/profile_img.png',
-                                                    height: 20,
-                                                    width: 20,
+                                                  RatingBar(
+                                                    itemSize: 20,
+                                                    initialRating: 3,
+                                                    direction: Axis.horizontal,
+                                                    allowHalfRating: true,
+                                                    itemCount: 5,
+                                                    ratingWidget: RatingWidget(
+                                                      full: const Icon(
+                                                        Icons.star,
+                                                        color: Colors.yellow,
+                                                      ),
+                                                      half: const Icon(
+                                                        Icons.star_half,
+                                                        color: Colors.yellow,
+                                                      ),
+                                                      empty: const Icon(
+                                                        Icons.star_border,
+                                                        color: Colors.yellow,
+                                                      ),
+                                                    ),
+                                                    onRatingUpdate: (rating) {
+                                                      print(rating);
+                                                    },
                                                   ),
                                                   const SizedBox(
-                                                    width: 10,
+                                                    height: 5,
                                                   ),
-                                                  Text(
-                                                    '${matches[index].secondTeam}',
-                                                    // 'ECU',
-                                                    style: const TextStyle(
+                                                  const Text(
+                                                    '2',
+                                                    style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 18,
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
                                                       color: Colors.grey,
                                                     ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
                                                   ),
                                                 ],
                                               ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    '${matches[index].from}',
-                                                    // 'ECU',
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '${matches[index].date}',
-                                                    // 'ECU',
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          );
-                                        },
-                                        itemCount: trip.matches?.length ?? 0,
-                                      ),
-                                    ],
-                                  ),
-                                  const Divider(
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const DefaultTextStyle(
-                                        style: kTitleTextStyle,
-                                        child: Text(
-                                          'Stay',
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Image.asset(
-                                                'assets/images/profile_img.png',
-                                                height: 100,
-                                                width: 100,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                      'Presidinial wing',
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontSize: 15,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    const Text(
-                                                      'Marriot hotel',
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 15,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    RatingBar(
-                                                      itemSize: 20,
-                                                      initialRating: 3,
-                                                      direction:
-                                                          Axis.horizontal,
-                                                      allowHalfRating: true,
-                                                      itemCount: 5,
-                                                      ratingWidget:
-                                                          RatingWidget(
-                                                        full: const Icon(
-                                                          Icons.star,
-                                                          color: Colors.yellow,
-                                                        ),
-                                                        half: const Icon(
-                                                          Icons.star_half,
-                                                          color: Colors.yellow,
-                                                        ),
-                                                        empty: const Icon(
-                                                          Icons.star_border,
-                                                          color: Colors.yellow,
-                                                        ),
-                                                      ),
-                                                      onRatingUpdate: (rating) {
-                                                        print(rating);
-                                                      },
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    const Text(
-                                                      '2',
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 15,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                        itemCount: 1,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      itemCount: 1,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                        )
-                        .toList(),
-                  ),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             ),
@@ -673,54 +790,100 @@ class GuestDetailsScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                const DefaultTextStyle(
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                  child: Text('Phone number'),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                DefaultTextStyle(
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Colors.grey,
-                  ),
-                  child: Text(guest.contactNumber ?? ''),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const DefaultTextStyle(
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                          child: Text('Phone number'),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        DefaultTextStyle(
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                          child: Text(guest.contactNumber ?? ''),
+                        ),
+                      ],
+                    ),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(width: 2.0, color: Colors.white),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.phone,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                const DefaultTextStyle(
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                  child: Text('Email'),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                DefaultTextStyle(
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Colors.grey,
-                  ),
-                  child: Text(guest.email ?? ''),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const DefaultTextStyle(
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                          child: Text('Email'),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        DefaultTextStyle(
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                          child: Text(guest.email ?? ''),
+                        ),
+                      ],
+                    ),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(width: 2.0, color: Colors.white),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.email,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 50,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       OutlinedButton(
                         onPressed: () {},
@@ -751,10 +914,10 @@ class GuestDetailsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      TextButton(
+                      OutlinedButton(
                         onPressed: () {},
                         style: OutlinedButton.styleFrom(
                           side:
@@ -762,7 +925,7 @@ class GuestDetailsScreen extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 32.0, vertical: 8),
+                              horizontal: 32.0, vertical: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: const [
@@ -789,7 +952,7 @@ class GuestDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             )
           ],
@@ -833,7 +996,14 @@ class CustomProfileDataContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            child: Image.asset('assets/images/profile_img.png'),
+            child: guest.img != null
+                ? ClipOval(
+                    child: Image.network(
+                    guest.img!,
+                    height: 40,
+                    width: 40,
+                  ))
+                : Image.asset('assets/images/profile_img.png'),
           ),
           const SizedBox(
             height: 15,

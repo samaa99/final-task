@@ -21,7 +21,10 @@ class MyApp extends StatelessWidget {
       create: (context) => GuestCubit(GuestRepository(GuestWebService())),
       child: MaterialApp(
         title: 'Flutter Demo',
-        home: CreateNewGuest(),
+        home: GuestListScreen(),
+        theme: ThemeData(
+          brightness: Brightness.dark,
+        ),
       ),
     );
   }

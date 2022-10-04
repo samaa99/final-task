@@ -5,9 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../widgets/custom_guest_list.dart';
 
-class GuestListScreen extends StatelessWidget {
+class GuestListScreen extends StatefulWidget {
   GuestListScreen({Key? key}) : super(key: key);
 
+  @override
+  State<GuestListScreen> createState() => _GuestListScreenState();
+}
+
+class _GuestListScreenState extends State<GuestListScreen> {
   List<GuestDetailsModel> allGuests = [];
 
   PreferredSizeWidget? buildAppBar(BuildContext context) {
@@ -46,6 +51,7 @@ class GuestListScreen extends StatelessWidget {
           Flexible(
             child: TextField(
               decoration: InputDecoration(
+                border: InputBorder.none,
                 hintText: 'Search guests',
                 hintStyle: TextStyle(
                   color: Colors.grey,
@@ -64,12 +70,17 @@ class GuestListScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    BlocProvider.of<GuestCubit>(context).getGuests();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
       body: BlocBuilder<GuestCubit, GuestState>(
         builder: (context, state) {
-          BlocProvider.of<GuestCubit>(context).getGuests();
           allGuests = BlocProvider.of<GuestCubit>(context).guests;
           return Container(
             color: Colors.black,

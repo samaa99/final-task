@@ -32,8 +32,7 @@ class CustomGuestList extends StatelessWidget {
                       showModalBottomSheet(
                         isScrollControlled: true,
                         constraints: BoxConstraints(
-                            maxHeight:
-                                MediaQuery.of(context).size.height * 1.5),
+                            maxHeight: MediaQuery.of(context).size.height),
                         context: context,
                         builder: (context) => GuestDetailsScreen(
                           guest: guests[index],
@@ -53,7 +52,14 @@ class CustomGuestList extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ListTile(
                           leading: CircleAvatar(
-                            child: Image.asset('assets/images/profile_img.png'),
+                            child: guests[index].img != null
+                                ? ClipOval(
+                                    child: Image.network(
+                                    guests[index].img!,
+                                    height: 70,
+                                    width: 70,
+                                  ))
+                                : Image.asset('assets/images/profile_img.png'),
                           ),
                           title: Text(
                             '${guests[index].firstName}',
@@ -84,9 +90,7 @@ class CustomGuestList extends StatelessWidget {
                         matches = trips[idx].matches ?? [];
                         return Card(
                           margin: EdgeInsets.zero,
-                          color: trips[idx].status == 'approved'
-                              ? Color(0xff091E0C)
-                              : Colors.deepOrange[100],
+                          color: const Color(0xff091E0C),
                           shape: const BeveledRectangleBorder(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(5),
@@ -140,11 +144,22 @@ class CustomGuestList extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Image.asset(
-                                          'assets/images/profile_img.png',
-                                          height: 20,
-                                          width: 20,
-                                        ),
+                                        // trips[index].package != null ? trips[index].package!.image != null
+                                        //     ? Image.network(trips[index].package!.image!)
+                                        //     : Image.asset(
+                                        //   'assets/images/profile_img.png',
+                                        //   height: 20,
+                                        //   width: 20,
+                                        // ) : Image.asset(
+                                        //   'assets/images/profile_img.png',
+                                        //   height: 20,
+                                        //   width: 20,
+                                        // ),
+                                        // Image.asset(
+                                        //   'assets/images/profile_img.png',
+                                        //   height: 20,
+                                        //   width: 20,
+                                        // ),
                                         const SizedBox(
                                           width: 10,
                                         ),
@@ -219,111 +234,3 @@ class CustomGuestList extends StatelessWidget {
     );
   }
 }
-
-// Card(
-// margin: EdgeInsets.zero,
-// color: const Color(0xff091E0C),
-// shape: const BeveledRectangleBorder(
-// borderRadius: BorderRadius.only(
-// topLeft: Radius.circular(5),
-// topRight: Radius.circular(5),
-// ),
-// ),
-// child: Padding(
-// padding: const EdgeInsets.symmetric(
-// horizontal: 16.0, vertical: 24),
-// child: Row(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// children: [
-// Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// children: [
-// Row(
-// mainAxisAlignment: MainAxisAlignment.start,
-// children: [
-// Text(
-// 'Trip',
-// style: TextStyle(
-// fontWeight: FontWeight.w700,
-// fontSize: 18,
-// color: Colors.white,
-// ),
-// ),
-// Text(
-// // ' .${guests[0].trips[index].status}',
-// ' .${guests[index].title}',
-// style: TextStyle(
-// fontWeight: FontWeight.w400,
-// fontSize: 18,
-// color: Colors.green,
-// ),
-// ),
-// ],
-// ),
-// const SizedBox(
-// height: 15,
-// ),
-// Row(
-// mainAxisAlignment:
-// MainAxisAlignment.spaceBetween,
-// children: [
-// Image.asset(
-// 'assets/images/profile_img.png',
-// height: 20,
-// width: 20,
-// ),
-// const SizedBox(
-// width: 10,
-// ),
-// const Text(
-// 'QAT',
-// style: TextStyle(
-// fontWeight: FontWeight.w700,
-// fontSize: 18,
-// color: Colors.grey,
-// ),
-// ),
-// const SizedBox(
-// width: 15,
-// ),
-// const Text(
-// 'Vs.',
-// style: TextStyle(
-// fontWeight: FontWeight.w400,
-// fontSize: 18,
-// color: Colors.grey,
-// ),
-// ),
-// const SizedBox(
-// width: 15,
-// ),
-// Image.asset(
-// 'assets/images/profile_img.png',
-// height: 20,
-// width: 20,
-// ),
-// const SizedBox(
-// width: 10,
-// ),
-// const Text(
-// 'ECU',
-// style: TextStyle(
-// fontWeight: FontWeight.w700,
-// fontSize: 18,
-// color: Colors.grey,
-// ),
-// ),
-// ],
-// ),
-// ],
-// ),
-// Image.asset(
-// 'assets/images/profile_img.png',
-// height: 50,
-// width: 50,
-// ),
-// ],
-// ),
-// ),
-// );

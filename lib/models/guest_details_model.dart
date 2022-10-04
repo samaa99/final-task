@@ -171,7 +171,6 @@ class Guest {
     data['loacalId'] = loacalId;
     data['contact_point_id'] = contact_point_id;
     data['group_ids'] = group_ids;
-
     return data;
   }
 }
