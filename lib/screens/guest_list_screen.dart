@@ -81,9 +81,8 @@ class _GuestListScreenState extends State<GuestListScreen> {
       appBar: buildAppBar(context),
       body: BlocBuilder<GuestCubit, GuestState>(
         builder: (context, state) {
-          setState(() {
-            allGuests = BlocProvider.of<GuestCubit>(context).guests;
-          });
+          allGuests = BlocProvider.of<GuestCubit>(context).guests;
+
           return Container(
             color: Colors.black,
             width: MediaQuery.of(context).size.width,
